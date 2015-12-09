@@ -8,24 +8,33 @@ class SampleBot(Bot):
     def make_move(self, board, dice_results):
         board.set_player_perspective(self.player)
         result_moves = []
-        for dice_result in dice_results:
-            some_moves = search_possible_moves(board, self.player,
-                    dice_result)
-            if len(some_moves) > 0:
-                some_move = some_moves[0]
-            else:
-                continue
+        new_move_added = True
 
-            if some_move == (-1):
-                board.remove_checker_from_bar()
-                board.push_player_checker(dice_result)
-                result_moves += [(self.player, some_move, dice_result)]
-            else:
-                if some_move + dice_result >= 24:
-                    board.pop_player_checker(some_move)
+        while new_move_added:
+
+            new_move_added = False
+            for i in range(len(dice_results)):
+                some_moves = search_possible_moves(board, self.player,
+                        dice_results[i])
+                if len(some_moves) > 0:
+                    some_move = some_moves[0]
                 else:
-                    board.move_checker(some_move + dice_result, some_move)
-                result_moves += [(self.player, some_move, dice_result)]
+                    continue
+
+                if some_move == (-1):
+                    board.remove_checker_from_bar()
+                    board.push_player_checker(dice_results[i])
+                    result_moves += [(self.player, some_move, dice_results[i])]
+                else:
+                    if some_move + dice_results[i] >= 24:
+                        board.pop_player_checker(some_move)
+                    else:
+                        board.move_checker(some_move + dice_results[i], some_move)
+                    result_moves += [(self.player, some_move, dice_results[i])]
+
+                dice_results.remove(dice_results[i])
+                new_move_added = True
+                break
 
         return result_moves
                 

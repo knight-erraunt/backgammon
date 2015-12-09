@@ -2,7 +2,7 @@ from copy import deepcopy
 import logging
 from board import Board
 from judge import Judge
-from random import randint
+import random
 
 log = logging.getLogger("Game")
 
@@ -10,7 +10,8 @@ class Supervisor():
     """ Class responsible for supervising the game and logging the
     results. """
 
-    def __init__(self, black_player, white_player):
+    def __init__(self, black_player, white_player, random_seed):
+        random.seed(random_seed)
         self.players = {
                 'W' : white_player,
                 'B' : black_player
@@ -21,7 +22,7 @@ class Supervisor():
         """ Returns the result of a double dice roll, doubles the amount
         of dices if the dices have the same results (look backgammon
         rules """
-        a, b = randint(1, 6), randint(1, 6)
+        a, b = random.randint(1, 6), random.randint(1, 6)
         if a == b:
             return [a, b, a, b]
         else:
@@ -32,8 +33,10 @@ class Supervisor():
         
         current_player, prev_player = 'W', 'B'
         incorrect_move_attempted = False
+        not_all_moves_requested = False
 
-        while Judge.return_winner(self.board) == None:
+        while not incorrect_move_attempted and \
+                Judge.return_winner(self.board) == None:
             log.info(current_player + ' players turn')
             dice_results = self.double_dice()
             log.info("Dice results : " + str(dice_results))
@@ -46,8 +49,9 @@ class Supervisor():
                 continue
 
             board_copy = deepcopy(self.board)
+            dices_copy = deepcopy(dice_results)
             moves = self.players[current_player].make_move(board_copy,
-                    dice_results)
+                    dices_copy)
             
             log.info("Player wants to make moves: " + str(moves))
 
@@ -57,25 +61,33 @@ class Supervisor():
                     Judge.execute_move(self.board, move)
                 else:
                     log.error(str(move) + " is invalid")
-            
-            if len(dice_results) > 0 and \
-                Judge.has_possible_moves(self.board,
-                                        current_player,
-                                        dice_results):
-                    log.error("Player did not make all the possible moves")
                     incorrect_move_attempted = True
                     break
+            
+            if Judge.has_possible_moves(self.board,
+                                        current_player,
+                                        dice_results):
+                log.error("Player did not make all the possible moves")
+                not_all_moves_requested = True
+                break
 
             current_player, prev_player = prev_player, current_player
 
         if incorrect_move_attempted:
-            log.info(str(prev_player) + " player has won, due to " \
-            "incorrect move of the opponent"
+            log.error(str(prev_player) + " player has won, due to " \
+                "incorrect move of the opponent")
+            winner = prev_player
+        elif not_all_moves_requested:
+            log.error(str(prev_player) + " player has won, due to " \
+                "opponent not requesting all possible moves")
+            winner = prev_player
         else: 
             winner = Judge.return_winner(self.board)
             log.info(str(winner) + " player has won")
         
         log.info("Game ended")
+
+        return winner
 
 
 

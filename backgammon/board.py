@@ -1,4 +1,5 @@
 from game_config import *
+from copy import deepcopy
 
 class IllegalOperation(Exception):
     pass
@@ -15,8 +16,8 @@ class Board():
         """ Board is represented by a line of field beginning at the top
         right and ending in the bottom right going all around. Stack of
         checkers is represented by a pair (amount, color). """
-        self.spikes = INITIAL_SPIKES_STATE
-        self.bar = INITIAL_BAR
+        self.spikes = deepcopy(INITIAL_SPIKES_STATE)
+        self.bar = deepcopy(INITIAL_BAR)
         self._player_perspective = INITIAL_PLAYER_PERSPECTIVE
         self.home_size = HOME_SIZE
 

@@ -4,16 +4,23 @@ import logging
 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
+    match_results = {
+            'W' : 0,
+            'B' : 0
+            }
 
-    game_supervisor = Supervisor(SampleBot('B'), SampleBot('W'))
+    for i in range(1000):
+        game_supervisor = Supervisor(SampleBot('B'), SampleBot('W'), i)
+        match_results[game_supervisor.play_game()] += 1
 
-    game_supervisor.play_game()
+    print(match_results)
 
 
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.ERROR) # DEBUG for development,
+                                             # ERROR for benchmarks
     main()
 
 
