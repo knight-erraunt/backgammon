@@ -1,9 +1,10 @@
 
 
 class Board():
-    """ A class for the sole purpose of holding information about the
-    board state. This class is used to communicate the board state
-    between the game server, judge and clients. """
+    """ A class for purpose of holding information about the board
+    state. Also has simple helpers for board manipulation This class is
+    used to communicate the board state between the game server, judge
+    and clients. """
 
     def __init__(self):
         " Creates a board without any prior moves executed. "
