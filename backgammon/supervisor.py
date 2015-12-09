@@ -31,6 +31,7 @@ class Supervisor():
         log.info("Game started")
         
         current_player, prev_player = 'W', 'B'
+        incorrect_move_attempted = False
 
         while Judge.return_winner(self.board) == None:
             log.info(current_player + ' players turn')
@@ -62,11 +63,21 @@ class Supervisor():
                                         current_player,
                                         dice_results):
                     log.error("Player did not make all the possible moves")
+                    incorrect_move_attempted = True
+                    break
 
             current_player, prev_player = prev_player, current_player
+
+        if incorrect_move_attempted:
+            log.info(str(prev_player) + " player has won, due to " \
+            "incorrect move of the opponent"
+        else: 
+            winner = Judge.return_winner(self.board)
+            log.info(str(winner) + " player has won")
         
-        winner = Judge.return_winner(self.board)
-        log.info(str(winner) + " player has won")
         log.info("Game ended")
+
+
+
 
 
