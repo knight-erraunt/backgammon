@@ -1,4 +1,5 @@
 from game_config import *
+from bots.move_search_utils import search_possible_moves
 
 
 class Judge():
@@ -54,7 +55,6 @@ class Judge():
     
         return board.valid_dest(dest_spike_index)
 
-    
     @staticmethod
     def execute_move(board, move):
         """ Executes the move on the board and returns the board
@@ -78,6 +78,24 @@ class Judge():
         board.push_player_checker(dest_spike_index)
 
         return board
+
+    @staticmethod
+    def return_winner(board):
+        for player in PLAYERS:
+            board.set_player_perspective(player)
+            if 0 == len(board.player_spikes()):
+                return player
+
+        return None
+
+    @staticmethod
+    def has_possible_moves(board, player, dice_results):
+        for dice_result in dice_results:
+            if 0 < len(search_possible_moves(board, player, dice_result)):
+                return True
+        return False
+
+
 
 
 
