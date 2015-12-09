@@ -48,8 +48,12 @@ class Board():
 
         if self.spikes[spike_index] == EMPTY_SPIKE:
             self.spikes[spike_index] = [1, self._player_perspective]
-        else:
+        elif self.spikes[spike_index][1] == self._player_perspective:
             self.spikes[spike_index][0] += 1
+        else:
+            self.spikes[spike_index] = [1, self._player_perspective]
+            self.bar[[x for x in PLAYERS if x !=
+                self._player_perspective][0]] += 1
 
     def move_checker(self, dest_spike, source_spike):
         self.pop_player_checker(source_spike)

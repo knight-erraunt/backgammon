@@ -1,6 +1,8 @@
 from supervisor import Supervisor
 from bots.sample_bot import SampleBot
+from bots.aggressive_bot import AggressiveBot
 import logging
+import datetime
 
 
 def main():
@@ -10,7 +12,8 @@ def main():
             }
 
     for i in range(1000):
-        game_supervisor = Supervisor(SampleBot('B'), SampleBot('W'), i)
+        game_supervisor = Supervisor(AggressiveBot('B'), SampleBot('W'),
+                            datetime.datetime.now())
         match_results[game_supervisor.play_game()] += 1
 
     print(match_results)
@@ -19,7 +22,7 @@ def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.ERROR) # DEBUG for development,
+    logging.basicConfig(level=logging.DEBUG) # DEBUG for development,
                                              # ERROR for benchmarks
     main()
 

@@ -8,7 +8,7 @@ def search_possible_moves(board, player, on_dice):
     board.set_player_perspective(player) 
 
     if board.bar[player] > 0:
-        if board.valid_dest[on_dice]:
+        if board.valid_dest(on_dice - 1):
             return [-1]
         else:
             return []

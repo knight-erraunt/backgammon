@@ -50,7 +50,7 @@ class Supervisor():
 
             board_copy = deepcopy(self.board)
             dices_copy = deepcopy(dice_results)
-            moves = self.players[current_player].make_move(board_copy,
+            moves = self.players[current_player].make_moves(board_copy,
                     dices_copy)
             
             log.info("Player wants to make moves: " + str(moves))

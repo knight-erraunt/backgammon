@@ -39,7 +39,7 @@ class Judge():
             if board.bar[player] < 1:
                 return False
 
-            if not board.valid_dest(fields_to_move):
+            if not board.valid_dest(fields_to_move - 1):
                 return False
 
             return True
@@ -66,7 +66,7 @@ class Judge():
         board.set_player_perspective(player)
         
         if spike_index == OUT_OF_BAR_SPECIAL_MOVE:
-            dest_spike_index = fields_to_move
+            dest_spike_index = fields_to_move - 1
             board.remove_checker_from_bar()
         else:
             dest_spike_index = spike_index + fields_to_move
