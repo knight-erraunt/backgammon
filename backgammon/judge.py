@@ -3,7 +3,7 @@
 
 class Judge():
     """ A class which contains methods for checking and executing game
-    logic. Should probably not be instantiated """
+    logic. Should probably not be instantiated. """
 
     # TODO: big ugly code with little abstraction, good candidate
     # for future refactor
@@ -12,7 +12,7 @@ class Judge():
 
     @staticmethod
     def _validate_move(move):
-        " just a rough validation for the move, never to much caution "
+        " Just a rough validation for the move, never to much caution. "
 
         assert len(move) == 3
 
@@ -38,7 +38,7 @@ class Judge():
     def check_move(board, move):
         """ Method taking a board state and a move and returning wether the
         move is a valid move. move is of the form 
-        ('W'|'B', (-1)-23, 1-6) """
+        ('W'|'B', (-1)-23, 1-6). """
 
         player, spike_index, fields_to_move = Judge._validate_move(move)
 
@@ -101,7 +101,7 @@ class Judge():
     def execute_move(board, move):
         """ Executes the move on the board and returns the board
         assumes the move has been previously checked by the check_move
-        function """
+        function. """
 
         player, spike_index, fields_to_move = Judge._validate_move(move)
 
