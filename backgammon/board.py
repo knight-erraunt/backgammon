@@ -33,8 +33,7 @@ class Board():
                         self._player_perspective])
 
     def pop_player_checker(self, spike_index):
-        if self.spikes[spike_index] == EMPTY_SPIKE or \
-                self.spikes[spike_index][1] != self._player_perspective:
+        if not self.valid_source(spike_index)
             raise IllegalOperation
 
         if self.spikes[spike_index][0] == 1:
@@ -43,8 +42,7 @@ class Board():
             self.spikes[spike_index][0] -= 1
 
     def push_player_checker(self, spike_index):
-        if spike_index >= len(INITIAL_SPIKES_STATE) or \
-                not self.valid_dest(spike_index):
+        if not self.valid_dest(spike_index):
             raise IllegalOperation
 
         if self.spikes[spike_index] == EMPTY_SPIKE:
@@ -61,12 +59,14 @@ class Board():
         self.push_player_checker(dest_spike)
             
     def valid_dest(self, spike_index):
-        return self.spikes[spike_index] == EMPTY_SPIKE or \
+        return spike_index >= len(INITIAL_SPIKES_STATE) or \
+            self.spikes[spike_index] == EMPTY_SPIKE or \
             self.spikes[spike_index][1] == self._player_perspective or \
             self.spikes[spike_index][0] == 1
 
     def valid_source(self, spike_index):
-        return self.spikes[spike_index] != EMPTY_SPIKE and \
+        return spike_index < len(INITIAL_SPIKES_STATE) and \
+                self.spikes[spike_index] != EMPTY_SPIKE and \
                 self.spikes[spike_index][1] == self._player_perspective
 
     def remove_checker_from_bar(self):
