@@ -43,7 +43,8 @@ class Board():
             self.spikes[spike_index][0] -= 1
 
     def push_player_checker(self, spike_index):
-        if not self.valid_dest(spike_index):
+        if spike_index >= len(INITIAL_SPIKES_STATE) or \
+                not self.valid_dest(spike_index):
             raise IllegalOperation
 
         if self.spikes[spike_index] == EMPTY_SPIKE:
