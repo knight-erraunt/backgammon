@@ -87,6 +87,9 @@ class BotBase(Bot):
             board_two.set_player_perspective(player)
         
             move = self.choose_move(board_one, player, dice_results[0], depth)
+            # TODO : Remove the awful repetitive code below,
+            # maybe move it to the board class or somewhere else,
+            # but definiely a refactor is needed
             if move[1] != None:
                 board_one_moves += [move]
                 if move[1] == (-1):
