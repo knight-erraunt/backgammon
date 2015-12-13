@@ -13,9 +13,9 @@ class Board():
     def __init__(self):
         " Creates a board without any prior moves executed. "
 
-        """ Board is represented by a line of field beginning at the top
-        right and ending in the bottom right going all around. Stack of
-        checkers is represented by a pair (amount, color). """
+        # Board is represented by a line of field beginning at the top
+        # right and ending in the bottom right going all around. Stack of
+        # checkers is represented by a pair (amount, color).
         self.spikes = deepcopy(INITIAL_SPIKES_STATE)
         self.bar = deepcopy(INITIAL_BAR)
         self._player_perspective = INITIAL_PLAYER_PERSPECTIVE
