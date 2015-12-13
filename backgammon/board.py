@@ -33,7 +33,7 @@ class Board():
                         self._player_perspective])
 
     def pop_player_checker(self, spike_index):
-        if not self.valid_source(spike_index)
+        if not self.valid_source(spike_index):
             raise IllegalOperation
 
         if self.spikes[spike_index][0] == 1:
