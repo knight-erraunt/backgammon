@@ -58,6 +58,20 @@ class BotBase(Bot):
         # return the actual move from (score, moves) tuple
         return moves_choosen[1]
 
+    def exec_move(self, board, move):
+        if move[1] != None:
+            if move[1] == (-1):
+                board.remove_checker_from_bar()
+                board.push_player_checker(move[2] - 1)
+            elif move[1] + move[2] < 24:
+                board.move_checker(move[1] + move[2], move[1])
+            else:
+                board.pop_player_checker(move[1])
+            return [move]
+        else:
+            return []
+
+
     def choose_moves(self, board, player, dice_results, depth):
         result_moves = []
         result_score = 0
@@ -69,15 +83,7 @@ class BotBase(Bot):
 
             for _ in range(4):
                 move = self.choose_move(board_copy, player, dice_results[0], depth)
-                if move[1] != None:
-                    result_moves += [move]
-                    if move[1] == (-1):
-                        board_copy.remove_checker_from_bar()
-                        board_copy.push_player_checker(dice_results[0] - 1)
-                    elif move[1] + move[2] < 24:
-                        board_copy.move_checker(move[1] + move[2], move[1])
-                    else:
-                        board_copy.pop_player_checker(move[1])
+                result_moves += self.exec_move(board_copy, move)
             result_score = self.relative_board_value(board_copy, player)
 
         else:
@@ -87,52 +93,17 @@ class BotBase(Bot):
             board_two.set_player_perspective(player)
         
             move = self.choose_move(board_one, player, dice_results[0], depth)
-            # TODO : Remove the awful repetitive code below,
-            # maybe move it to the board class or somewhere else,
-            # but definiely a refactor is needed
-            if move[1] != None:
-                board_one_moves += [move]
-                if move[1] == (-1):
-                    board_one.remove_checker_from_bar()
-                    board_one.push_player_checker(dice_results[0] - 1)
-                elif move[1] + move[2] < 24:
-                    board_one.move_checker(move[1] + move[2], move[1])
-                else:
-                    board_one.pop_player_checker(move[1])
+            board_one_moves += self.exec_move(board_one, move)
 
             move = self.choose_move(board_one, player, dice_results[1], depth)
-            if move[1] != None:
-                board_one_moves += [move]
-                if move[1] == (-1):
-                    board_one.remove_checker_from_bar()
-                    board_one.push_player_checker(dice_results[1] - 1)
-                elif move[1] + move[2] < 24:
-                    board_one.move_checker(move[1] + move[2], move[1])
-                else:
-                    board_one.pop_player_checker(move[1])
+            board_one_moves += self.exec_move(board_one, move)
 
             # dices used in the reversed order
             move = self.choose_move(board_two, player, dice_results[1], depth)
-            if move[1] != None:
-                board_two_moves += [move]
-                if move[1] == (-1):
-                    board_two.remove_checker_from_bar()
-                    board_two.push_player_checker(dice_results[1] - 1)
-                elif move[1] + move[2] < 24:
-                    board_two.move_checker(move[1] + move[2], move[1])
-                else:
-                    board_two.pop_player_checker(move[1])
+            board_two_moves += self.exec_move(board_two, move)
 
             move = self.choose_move(board_two, player, dice_results[0], depth)
-            if move[1] != None:
-                board_two_moves += [move]
-                if move[1] == (-1):
-                    board_two.remove_checker_from_bar()
-                    board_two.push_player_checker(dice_results[0] - 1)
-                elif move[1] + move[2] < 24:
-                    board_two.move_checker(move[1] + move[2], move[1])
-                else:
-                    board_two.pop_player_checker(move[1])
+            board_two_moves += self.exec_move(board_two, move)
 
             board_one_val = self.relative_board_value(board_one, player)
             board_two_val = self.relative_board_value(board_two, player)
